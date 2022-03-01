@@ -11,16 +11,17 @@
     <title>YouTube API</title>
   </head>
   <body>
-    <h1 class="text-center">CLIENTE!! Busca tu cancion</h1>
+    <h1 class="text-center">Busca tu canción!!</h1>
         <br>
         <div class="input-group input-group-lg container flex">
             <form method="POST" >
                 {% csrf_token %}
-                <label for="search">Escribe tu cancion: </label>
+                <label for="search">Busca aquí!! </label>
                 <br>
-                <input type="text" class="form-control"   name="search">
+                <input type="text" class="form-control" name="search">
                 <br>
-                <button type="submit" class="btn btn-outline-success" >Buscar</button>
+                <button type="submit" class="btn btn-outline-success" >Para cantar</button>
+                <button type="button" class="btn btn-outline-success" >Para escuchar</button>
                 <br>
                 <br>
             </form>    
@@ -39,7 +40,7 @@
                 <h5 class="card-title">{{ video.title }}</h5>
                 <div class="d-flex justify-content-between aling-items-center">
                     <div class="btn-group">
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ video.url }}" target="_blank">Agregar</a>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ video.url }}" target="_blank">Solicitar</a>
                     </div>
                     <p class="card-text">Duracion: {{video.duration}} min</p>
                 </div>

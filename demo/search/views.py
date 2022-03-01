@@ -15,7 +15,7 @@ def index(request):
 
         s_params = {
             'part' : 'snippet',
-            'q' : request.POST['search']+' karaoke',
+            'q' : request.POST['search']+'karaoke',
             
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'maxResults' : 9,
@@ -43,16 +43,12 @@ def index(request):
 
         print(results[0]['contentDetails']['licensedContent'])
 
-        
-
-        
-
         for result in results:
             video_data = {
                 'title': result['snippet']['title'],
                 'id': result['id'],
-                # 'url': f'https://www.youtube.com/watch?v={ result["id"] }',
-                'url' : f'https://www.youtube.com/embed/{ result["id"] }',
+                'url': f'https://www.youtube.com/watch?v={ result["id"] }',
+                #'url' : f'https://www.youtube.com/embed/{ result["id"] }',
                 'duration' :parse_duration(result['contentDetails']['duration']).total_seconds()//60,
                 'thumbnail': result['snippet']['thumbnails']['high']['url'],
                 'licencia' : result['contentDetails']['licensedContent'],
@@ -65,3 +61,33 @@ def index(request):
     }
 
     return render(request, 'search/index.html', context)
+
+def listV(request):
+    videos = []
+
+    listSolicitud = 'https://www.googleapis.com/youtube/v3/playlistItems'
+    insert = 'https://www.googleapis.com/youtube/v3/playlistItems'
+
+    s_params = {
+            'part' : 'snippet',
+            'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM',
+            'key' : settings.YOUTUBE_DATA_API_KEY,
+    }
+
+    r = requests.get(listSolicitud, params=s_params)
+    results = r.json()['items']
+    for result in results:
+        ids = {
+            'id' : result['snippet']['resourceId']['videoId']
+        }
+        print(ids)
+    resId = {'id': {'kind': 'youtube#video', 'videoId': 'moTSMNScgHc'}}
+    i_params = {
+        'key' : settings.YOUTUBE_DATA_API_KEY,
+        'part' : 'snippet',
+        'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM',
+        'resourceId': resId,
+    }
+    r = requests.get(insert, params=i_params)
+    print(r.json())
+    return render(request, 'search/list.html')

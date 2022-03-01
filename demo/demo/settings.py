@@ -118,8 +118,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-#YOUTUBE_DATA_API_KEY = 'AIzaSyDUfRK6WODJQDLcf-Pg1buGYAGpl4ivLlA'
-YOUTUBE_DATA_API_KEY = 'AIzaSyAdUEYAzL6Nu4wDziSe_fxX-Snt4eZjjPA'
+YOUTUBE_DATA_API_KEY = 'AIzaSyDUfRK6WODJQDLcf-Pg1buGYAGpl4ivLlA'
+#YOUTUBE_DATA_API_KEY = 'AIzaSyAdUEYAzL6Nu4wDziSe_fxX-Snt4eZjjPA'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
