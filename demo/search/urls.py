@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('',views.index, name='index'),
-    path('list',views.listV, name='list'),
+    path('list/<video_id>/',views.listV, name='tolist'),
 ]

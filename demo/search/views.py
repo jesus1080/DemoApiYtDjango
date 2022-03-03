@@ -1,8 +1,14 @@
 from multiprocessing import context
+from urllib import response
 import requests
 from django.shortcuts import render
 from django.conf import settings
 from isodate import parse_duration
+from google_auth_oauthlib import flow
+import googleapiclient.discovery 
+
+
+
 
 # Create your views here.
 
@@ -62,32 +68,47 @@ def index(request):
 
     return render(request, 'search/index.html', context)
 
-def listV(request):
-    videos = []
+def listV(request, video_id):
+    
+    launch_browser = True
+    api_service_name = "youtube"
+    api_version = "v3"
+    # scopes = ["https://www.googleapis.com/auth/youtube",
+    #       "https://www.googleapis.com/auth/youtube.force-ssl",
+    #       "https://www.googleapis.com/auth/youtubepartner"]
+    scopes =["https://www.googleapis.com/auth/youtubepartner", "https://www.googleapis.com/auth/youtube"]
+    
 
-    listSolicitud = 'https://www.googleapis.com/youtube/v3/playlistItems'
-    insert = 'https://www.googleapis.com/youtube/v3/playlistItems'
+    appflow = flow.InstalledAppFlow.from_client_secrets_file(
+        '/home/jesus/ProyectosDjango/DemoApiYtDjango/demo/search/client_secret.json', scopes
+    )
+    if launch_browser:
+        appflow.run_local_server()
+    else:
+        appflow.run_console()
 
-    s_params = {
-            'part' : 'snippet',
-            'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM',
-            'key' : settings.YOUTUBE_DATA_API_KEY,
-    }
-
-    r = requests.get(listSolicitud, params=s_params)
-    results = r.json()['items']
-    for result in results:
-        ids = {
-            'id' : result['snippet']['resourceId']['videoId']
+    credentials = appflow.credentials
+    youtube = googleapiclient.discovery.build(
+        api_service_name, api_version, credentials=credentials)
+    
+    requests = youtube.playlistItems().insert(
+        part="snippet",
+        
+        body={
+                
+                'snippet': {
+                  #id de play list de tu lista
+                  'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM', 
+                  'resourceId': {
+                          'kind': 'youtube#video',
+                          'videoId': video_id,
+                          
+                    },
+                  'position': 0
+                }
         }
-        print(ids)
-    resId = {'id': {'kind': 'youtube#video', 'videoId': 'moTSMNScgHc'}}
-    i_params = {
-        'key' : settings.YOUTUBE_DATA_API_KEY,
-        'part' : 'snippet',
-        'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM',
-        'resourceId': resId,
-    }
-    r = requests.get(insert, params=i_params)
-    print(r.json())
-    return render(request, 'search/list.html')
+    ).execute()
+    print(requests)
+
+   
+    return render(request,'search/list.html')

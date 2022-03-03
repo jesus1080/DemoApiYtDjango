@@ -40,7 +40,8 @@
                 <h5 class="card-title">{{ video.title }}</h5>
                 <div class="d-flex justify-content-between aling-items-center">
                     <div class="btn-group">
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ video.url }}" target="_blank">Solicitar</a>
+                        {% comment %} <a type="button" class="btn btn-sm btn-outline-secondary" href="{{ video.url }}" target="_blank">Solicitar</a> {% endcomment %}
+                        <a class="nav-link text-uppercase text-expanded" href="{% url 'tolist' video.id %}">Solicitar</a>
                     </div>
                     <p class="card-text">Duracion: {{video.duration}} min</p>
                 </div>
