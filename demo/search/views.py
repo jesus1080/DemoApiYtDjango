@@ -4,14 +4,10 @@ import requests
 from django.shortcuts import render
 from django.conf import settings
 from isodate import parse_duration
-from google_auth_oauthlib import flow
-import googleapiclient.discovery 
 from . import auth_user
 
 
-
-
-# Create your views here.
+# objet youtube auth
 youtube = auth_user.fun_aut_user()
 
 
@@ -26,7 +22,6 @@ def index(request):
         s_params = {
             'part' : 'snippet',
             'q' : request.POST['search']+'karaoke',
-            
             'key' : settings.YOUTUBE_DATA_API_KEY,
             'maxResults' : 9,
             'type' : 'video',
@@ -45,8 +40,8 @@ def index(request):
             'part' : 'snippet,contentDetails',
             'id' : ','.join(video_ids),
             'maxResults' : 9,
-            
         }
+
         r = requests.get(video_url, params=v_params)
 
         results = r.json()['items']
@@ -79,7 +74,7 @@ def listV(request, video_id):
         body={
              'snippet': {
                   #id de play list de tu lista
-                  'playlistId': 'PL3DaZVxO6YJM1n6PI2nkYbM6SUudSqphM', 
+                  'playlistId': 'PL3DaZVxO6YJMfDRl0cPrzIAEO67eQIrhD', 
                   'resourceId': {
                           'kind': 'youtube#video',
                           'videoId': video_id,
